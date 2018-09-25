@@ -9,6 +9,7 @@ import java.util.TimerTask;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JMenuBar;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -24,7 +25,10 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import java.awt.Toolkit;
@@ -66,6 +70,7 @@ public class MRIWindow extends JFrame {
 	private JTextArea req2;
 	private JTextArea req3;
 	private JTextArea req4;
+	private int refreshtime;
 
 	/**
 	 * Launch the application.
@@ -101,9 +106,32 @@ public class MRIWindow extends JFrame {
 	public MRIWindow() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MRIWindow.class.getResource("/com/stereodustparticles/musicrequestsystem/mri/favicon.png")));
 		setTitle("Music Request Interface");
+		MRIWindow self = this;
 		stopped = true;
 		t = new Timer();
 		rl = new RequestList();
+		refreshtime = 60;
+		String line;
+		try {
+			FileReader fileReader = new FileReader("config.mri");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            while((line = bufferedReader.readLine()) != null) {
+                String[] entry = line.split(",");
+                if(entry.length == 2) {
+                	switch(entry[0]) {
+                	case "reftime":
+                		refreshtime = Integer.valueOf(entry[1]);
+                		break;
+                	}
+                }
+            }   
+
+            bufferedReader.close();
+		}
+		catch (Exception e2) {
+			refreshtime = 60;
+		}
 		try {
 			mrs = new MRSInterface();
 		} catch (OneJobException e) {
@@ -123,7 +151,7 @@ public class MRIWindow extends JFrame {
 		JMenuItem mntmConfigureMri = new JMenuItem("Configure MRI");
 		mntmConfigureMri.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MRIConfig mc = new MRIConfig(mrs);
+				MRIConfig mc = new MRIConfig(mrs,self);
 				mc.setVisible(true);
 			}
 		});
@@ -152,6 +180,8 @@ public class MRIWindow extends JFrame {
 		mntmLoadConfiguration.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser jfc = new JFileChooser();
+				FileNameExtensionFilter f = new FileNameExtensionFilter("MRI Config Files (.mri)","mri");
+				jfc.setFileFilter(f);
 				String url = "";
 				String key = "";
 				String line;
@@ -171,6 +201,8 @@ public class MRIWindow extends JFrame {
 			                	case "key":
 			                		key = entry[1];
 			                		break;
+			                	case "reftime":
+			                		refreshtime = Integer.valueOf(entry[1]);
 			                	}
 			                }
 			            }   
@@ -195,6 +227,17 @@ public class MRIWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					mrs.saveConfig();
+					try {
+						FileWriter fileWriter = new FileWriter("config.mri",true);
+			            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+			            bufferedWriter.write("\nreftime," + String.valueOf(refreshtime));
+			            
+			            bufferedWriter.close();
+					}
+					catch(Exception ex) {
+						throw new OneJobException("Cannot save configuration: " + ex);
+					}
 					JOptionPane.showMessageDialog(contentPane,"Successfully saved configuration. It is in \"config.mri\",\nlocated in the same folder the executable is in.","Success!",JOptionPane.INFORMATION_MESSAGE);
 				} catch (OneJobException e1) {
 					JOptionPane.showMessageDialog(contentPane,"Failed to save configuration. Stuff your filesystem into\na swimming pool and try again.\n\nError: " + e1.getMessage(),"One Job Encountered!",JOptionPane.ERROR_MESSAGE);
@@ -203,17 +246,90 @@ public class MRIWindow extends JFrame {
 		});
 		mnConfiguration.add(mntmSaveConfiguration);
 		
-		JMenu mnRequests = new JMenu("Requests");
-		menuBar.add(mnRequests);
+		JMenu mnMrs = new JMenu("MRS");
+		menuBar.add(mnMrs);
+		
+		JMenuItem mntmConfigureApi = new JMenuItem("Configure API");
+		mntmConfigureApi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(contentPane,"This feature is not yet available in the MRI.","Not implemented",JOptionPane.WARNING_MESSAGE);
+			}
+		});
+		mnMrs.add(mntmConfigureApi);
+		
+		JMenuItem mntmVersionInfo = new JMenuItem("Version info");
+		mntmVersionInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(contentPane,"This feature is not yet available in the MRI.","Not implemented",JOptionPane.WARNING_MESSAGE);
+			}
+		});
+		mnMrs.add(mntmVersionInfo);
+		
+		JSeparator separator_4 = new JSeparator();
+		mnMrs.add(separator_4);
+		
+		JMenuItem mntmArchiveRequests = new JMenuItem("Archive requests");
+		mntmArchiveRequests.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(contentPane,"This feature is not yet available in the MRI.","Not implemented",JOptionPane.WARNING_MESSAGE);
+			}
+		});
+		mnMrs.add(mntmArchiveRequests);
+		
+		JMenuItem mntmDeleteRequests = new JMenuItem("Delete requests");
+		mntmDeleteRequests.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(contentPane,"This feature is not yet available in the MRI.","Not implemented",JOptionPane.WARNING_MESSAGE);
+			}
+		});
+		mnMrs.add(mntmDeleteRequests);
 		
 		JMenuItem mntmViewAllRequests = new JMenuItem("View all requests");
+		mnMrs.add(mntmViewAllRequests);
 		mntmViewAllRequests.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MRIReqs mr = new MRIReqs(mrs.getRequests());
 				mr.setVisible(true);
 			}
 		});
-		mnRequests.add(mntmViewAllRequests);
+		
+		JSeparator separator_5 = new JSeparator();
+		mnMrs.add(separator_5);
+		
+		JMenuItem mntmAdministration = new JMenuItem("Administration");
+		mntmAdministration.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(contentPane,"This feature is not yet available in the MRI.","Not implemented",JOptionPane.WARNING_MESSAGE);
+			}
+		});
+		mnMrs.add(mntmAdministration);
+		
+		JMenuItem mntmOpenclose = new JMenuItem("Open/close");
+		mntmOpenclose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int code = mrs.changeSystemStatus();
+					if(code == 200) {
+						JOptionPane.showMessageDialog(contentPane,"Successfully opened/closed system.","Success!",JOptionPane.INFORMATION_MESSAGE);
+					}
+					else {
+						JOptionPane.showMessageDialog(contentPane,"Failed to open/close system. Error code is " + code + "\nConsult the MRS and hit head on a wall to\nfind out what went wrong.","Failure!",JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(contentPane,"Failed to open/close system.\nMicrowave the program and try again.\n\nError: " + ex.getMessage(),"One Job Encountered!",JOptionPane.ERROR_MESSAGE);
+				}
+				if(mrs.systemStatus() == true && stopped == true) {
+					start();
+				}
+				else if(mrs.systemStatus() == false && stopped == false) {
+					stop();
+				}
+			}
+		});
+		mnMrs.add(mntmOpenclose);
+		
+		JMenu mnRequests = new JMenu("MRI");
+		menuBar.add(mnRequests);
 		
 		JMenuItem mntmClearAllRequests = new JMenuItem("Clear all requests");
 		mntmClearAllRequests.addActionListener(new ActionListener() {
@@ -301,7 +417,60 @@ public class MRIWindow extends JFrame {
 				}
 			}
 		});
+		
+		JMenuItem mntmRefreshRequestList = new JMenuItem("Refresh request list");
+		mntmRefreshRequestList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				getRequests();
+				getNumRequests();
+			}
+		});
+		mnRequests.add(mntmRefreshRequestList);
 		mnRequests.add(mntmClearAllRequests);
+		
+		JMenuItem mntmDumpRequestsTo = new JMenuItem("Dump requests to file");
+		mntmDumpRequestsTo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//JOptionPane.showMessageDialog(contentPane,"This feature is not yet available in the MRI.","Not implemented",JOptionPane.WARNING_MESSAGE);
+				String serializedreqs = "";
+				for(Request r : mrs.getRequests()) {
+					serializedreqs += r.toString() + "\n\n";
+				}
+				JFileChooser jfc = new JFileChooser();
+				jfc.setDialogTitle("Choose directory to save request dump to");
+				jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				if(jfc.showOpenDialog(contentPane) == JFileChooser.APPROVE_OPTION) {
+					String path = new File(jfc.getSelectedFile(),"requests.req").getPath(); 
+					try {
+						FileWriter fw = new FileWriter(path);
+						BufferedWriter bw = new BufferedWriter(fw);
+						
+						bw.write(serializedreqs);
+						
+						bw.close();
+						
+						JOptionPane.showMessageDialog(contentPane,"Successfully saved file to " + path + ".","Success!",JOptionPane.INFORMATION_MESSAGE);
+					}
+					catch(Exception ex) {
+						JOptionPane.showMessageDialog(contentPane,"Failed to save requests. Stuff your filesystem into\na swimming pool and try again.\n\nError: " + ex.getMessage(),"One Job Encountered!",JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
+		mnRequests.add(mntmDumpRequestsTo);
+		
+		JMenuItem mntmStopCounter = new JMenuItem("Toggle counter");
+		mntmStopCounter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(stopped == true) {
+					start();
+				}
+				else {
+					stop();
+				}
+			}
+		});
+		mnRequests.add(mntmStopCounter);
 		
 		JMenu mnAbout = new JMenu("About");
 		menuBar.add(mnAbout);
@@ -310,7 +479,7 @@ public class MRIWindow extends JFrame {
 		mntmAboutMri.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Icon icon = new ImageIcon(MRIWindow.class.getResource("/com/stereodustparticles/musicrequestsystem/mri/icon.png"));
-				JOptionPane.showMessageDialog(contentPane,"Music Request Interface\nInterface software for use with the Music Request System\n\nVersion: 1.0 BETA, release 4\n\nCopyright 2018 Brad Hunter/CarnelProd666. All rights reserved.\nDuplication prohibited except with written permission.","All your request are belong to us",JOptionPane.QUESTION_MESSAGE,icon);
+				JOptionPane.showMessageDialog(contentPane,"Music Request Interface\nInterface software for use with the Music Request System\n\nVersion: 1.0 BETA, release 5\n\nCopyright 2018 Brad Hunter/CarnelProd666. All rights reserved.\nDuplication prohibited except with written permission.","All your request are belong to us",JOptionPane.QUESTION_MESSAGE,icon);
 			}
 		});
 		mnAbout.add(mntmAboutMri);
@@ -929,7 +1098,7 @@ public class MRIWindow extends JFrame {
 	
 	public void start() {
 		task = new TimerTask() {
-			private int count = 60;
+			private int count = refreshtime;
 			
 			public void run() {
 				time.setText(Integer.toString(count));
@@ -938,7 +1107,7 @@ public class MRIWindow extends JFrame {
 					//Update
 					getRequests();
 					getNumRequests();
-					count = 60;
+					count = refreshtime;
 				}
 			}
 		};
@@ -949,5 +1118,12 @@ public class MRIWindow extends JFrame {
 		task.cancel();
 		t.purge();
 		stopped = true;
+	}
+	
+	public int getRefTime() {
+		return refreshtime;
+	}
+	public void setRefTime(int t) {
+		refreshtime = t;
 	}
 }

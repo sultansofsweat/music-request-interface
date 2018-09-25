@@ -14,6 +14,8 @@ import javax.swing.UIManager;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 public class MRIConfig extends JDialog {
 
@@ -35,7 +37,7 @@ public class MRIConfig extends JDialog {
 			e.printStackTrace();
 		}
 		try {
-			MRIConfig dialog = new MRIConfig(new MRSInterface("",""));
+			MRIConfig dialog = new MRIConfig(new MRSInterface("",""),new MRIWindow());
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -46,9 +48,9 @@ public class MRIConfig extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public MRIConfig(MRSInterface mrs) {
+	public MRIConfig(MRSInterface mrs,MRIWindow mri) {
 		setTitle("Configuration");
-		setBounds(100, 100, 450, 150);
+		setBounds(100, 100, 450, 180);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -77,6 +79,21 @@ public class MRIConfig extends JDialog {
 		key.setColumns(10);
 		key.setBounds(120, 41, 304, 30);
 		contentPanel.add(key);
+		
+		JLabel lblRefreshAfter = new JLabel("Refresh after:");
+		lblRefreshAfter.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblRefreshAfter.setBounds(10, 83, 100, 14);
+		contentPanel.add(lblRefreshAfter);
+		
+		JSpinner reftime = new JSpinner();
+		reftime.setModel(new SpinnerNumberModel(mri.getRefTime(), 5, 600, 5));
+		reftime.setBounds(120, 76, 60, 28);
+		contentPanel.add(reftime);
+		
+		JLabel lblSeconds = new JLabel("seconds");
+		lblSeconds.setHorizontalAlignment(SwingConstants.LEFT);
+		lblSeconds.setBounds(192, 83, 100, 14);
+		contentPanel.add(lblSeconds);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -86,6 +103,7 @@ public class MRIConfig extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						mrs.changeConfig(url.getText(),String.valueOf(key.getPassword()));
+						mri.setRefTime((int)reftime.getValue());
 						dispose();
 					}
 				});

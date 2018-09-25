@@ -95,4 +95,21 @@ public class RequestList {
 			}
 		}
 	}
+	
+	public String serialize() {
+		String out = "";
+		for(Request r : requests) {
+			if(r != null) {
+				out += r.toString();
+				out += "\n\n";
+			}
+		}
+		for(Request r : more) {
+			if(r != null) {
+				out += r.toString();
+				out += "\n\n";
+			}
+		}
+		return out;
+	}
 }

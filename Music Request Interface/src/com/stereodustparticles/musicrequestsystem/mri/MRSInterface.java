@@ -224,6 +224,14 @@ public class MRSInterface {
 				if(Integer.valueOf(r3[0]) > 0) {
 					System.out.println(Arrays.toString(r3) + "\n");
 					String[] r2 = new String[8];
+					r2[0]="";
+					r2[1]="";
+					r2[2]="";
+					r2[3]="";
+					r2[4]="";
+					r2[5]="";
+					r2[6]="None";
+					r2[7]="None";
 					for(int i = 0; i < Math.min(r3.length,8); i++) {
 						r2[i]=r3[i];
 					}
