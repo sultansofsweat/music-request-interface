@@ -13,6 +13,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JSeparator;
@@ -25,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
+import java.awt.Toolkit;
 
 public class MRIWindow extends JFrame {
 
@@ -68,6 +71,7 @@ public class MRIWindow extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (Throwable e) {
@@ -77,6 +81,7 @@ public class MRIWindow extends JFrame {
 			public void run() {
 				try {
 					MRIWindow frame = new MRIWindow();
+					//frame.setIconImage(new ImageIcon(getClass().getResource("favicon.ico")).getImage());
 					frame.getRequests();
 					frame.getNumRequests();
 					frame.setVisible(true);
@@ -94,6 +99,7 @@ public class MRIWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public MRIWindow() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MRIWindow.class.getResource("/com/stereodustparticles/musicrequestsystem/mri/favicon.png")));
 		setTitle("Music Request Interface");
 		stopped = true;
 		t = new Timer();
@@ -197,13 +203,114 @@ public class MRIWindow extends JFrame {
 		});
 		mnConfiguration.add(mntmSaveConfiguration);
 		
+		JMenu mnRequests = new JMenu("Requests");
+		menuBar.add(mnRequests);
+		
+		JMenuItem mntmViewAllRequests = new JMenuItem("View all requests");
+		mntmViewAllRequests.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MRIReqs mr = new MRIReqs(mrs.getRequests());
+				mr.setVisible(true);
+			}
+		});
+		mnRequests.add(mntmViewAllRequests);
+		
+		JMenuItem mntmClearAllRequests = new JMenuItem("Clear all requests");
+		mntmClearAllRequests.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int perform = JOptionPane.showConfirmDialog(contentPane,"This will mark all requests currently displayed as played.\nNOTE: it does NOT deal with the additional waiting requests!\n\nAre you sure you want to do this?","Confirm clearing requests",JOptionPane.YES_NO_OPTION);
+				if(perform == JOptionPane.YES_OPTION) {
+					try {
+						if(rl.get(0) != null) {
+							try {
+								int code = mrs.mark(rl.get(0).getID());
+								if(code == 200) {
+									queue1.setEnabled(false);
+									decline1.setEnabled(false);
+									played1.setEnabled(false);
+									info1.setEnabled(false);
+									req1.setVisible(false);
+									rl.remove(0);
+								}
+								else {
+									JOptionPane.showMessageDialog(contentPane,"Failed to mark request 1 as played. Error code is " + code + "\nConsult the MRS and hit head on a wall to\nfind out what went wrong.","Failure!",JOptionPane.ERROR_MESSAGE);
+								}
+							} catch (Exception e1) {
+								JOptionPane.showMessageDialog(contentPane,"Failed to mark request 1 as played.\nMicrowave the program and try again.\n\nError: " + e1.getMessage(),"One Job Encountered!",JOptionPane.ERROR_MESSAGE);
+							}
+						}
+						if(rl.get(1) != null) {
+							try {
+								int code = mrs.mark(rl.get(1).getID());
+								if(code == 200) {
+									queue2.setEnabled(false);
+									decline2.setEnabled(false);
+									played2.setEnabled(false);
+									info2.setEnabled(false);
+									req2.setVisible(false);
+									rl.remove(1);
+								}
+								else {
+									JOptionPane.showMessageDialog(contentPane,"Failed to mark request 2 as played. Error code is " + code + "\nConsult the MRS and hit head on a wall to\nfind out what went wrong.","Failure!",JOptionPane.ERROR_MESSAGE);
+								}
+							} catch (Exception e1) {
+								JOptionPane.showMessageDialog(contentPane,"Failed to mark request 2 as played.\nMicrowave the program and try again.\n\nError: " + e1.getMessage(),"One Job Encountered!",JOptionPane.ERROR_MESSAGE);
+							}
+						}
+						if(rl.get(2) != null) {
+							try {
+								int code = mrs.mark(rl.get(2).getID());
+								if(code == 200) {
+									queue3.setEnabled(false);
+									decline3.setEnabled(false);
+									played3.setEnabled(false);
+									info3.setEnabled(false);
+									req3.setVisible(false);
+									rl.remove(2);
+								}
+								else {
+									JOptionPane.showMessageDialog(contentPane,"Failed to mark request 3 as played. Error code is " + code + "\nConsult the MRS and hit head on a wall to\nfind out what went wrong.","Failure!",JOptionPane.ERROR_MESSAGE);
+								}
+							} catch (Exception e1) {
+								JOptionPane.showMessageDialog(contentPane,"Failed to mark request 3 as played.\nMicrowave the program and try again.\n\nError: " + e1.getMessage(),"One Job Encountered!",JOptionPane.ERROR_MESSAGE);
+							}
+						}
+						if(rl.get(3) != null) {
+							try {
+								int code = mrs.mark(rl.get(3).getID());
+								if(code == 200) {
+									queue4.setEnabled(false);
+									decline4.setEnabled(false);
+									played4.setEnabled(false);
+									info4.setEnabled(false);
+									req4.setVisible(false);
+									rl.remove(3);
+								}
+								else {
+									JOptionPane.showMessageDialog(contentPane,"Failed to mark request 4 as played. Error code is " + code + "\nConsult the MRS and hit head on a wall to\nfind out what went wrong.","Failure!",JOptionPane.ERROR_MESSAGE);
+								}
+							} catch (Exception e1) {
+								JOptionPane.showMessageDialog(contentPane,"Failed to mark request 4 as played.\nMicrowave the program and try again.\n\nError: " + e1.getMessage(),"One Job Encountered!",JOptionPane.ERROR_MESSAGE);
+							}
+						}
+						JOptionPane.showMessageDialog(contentPane,"Successfully marked requests as played.","Success!",JOptionPane.INFORMATION_MESSAGE);
+						update();
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(contentPane,"Failed to mark request as played.\nMicrowave the program and try again.\n\nError: " + e1.getMessage(),"One Job Encountered!",JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
+		mnRequests.add(mntmClearAllRequests);
+		
 		JMenu mnAbout = new JMenu("About");
 		menuBar.add(mnAbout);
 		
 		JMenuItem mntmAboutMri = new JMenuItem("About MRI");
 		mntmAboutMri.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(contentPane,"Music Request Interface\nInterface software for use with the Music Request System\n\nVersion: 1.0 BETA\n\nCopyright 2018 Brad Hunter/CarnelProd666. All rights reserved.\nDuplication prohibited except with written permission.","All your request are belong to us",JOptionPane.QUESTION_MESSAGE);
+				Icon icon = new ImageIcon(MRIWindow.class.getResource("/com/stereodustparticles/musicrequestsystem/mri/icon.png"));
+				JOptionPane.showMessageDialog(contentPane,"Music Request Interface\nInterface software for use with the Music Request System\n\nVersion: 1.0 BETA, release 4\n\nCopyright 2018 Brad Hunter/CarnelProd666. All rights reserved.\nDuplication prohibited except with written permission.","All your request are belong to us",JOptionPane.QUESTION_MESSAGE,icon);
 			}
 		});
 		mnAbout.add(mntmAboutMri);
@@ -813,6 +920,7 @@ public class MRIWindow extends JFrame {
 				break;
 			}
 		}
+		getNumRequests();
 	}
 	
 	public void getNumRequests() {
