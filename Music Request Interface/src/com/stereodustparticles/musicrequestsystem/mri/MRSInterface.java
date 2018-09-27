@@ -88,10 +88,17 @@ public class MRSInterface {
 	 * Test connection
 	 * Read system status
 	 * Change system status
-	 * xRead requests
-	 * xQueue requests
-	 * xDecline requests
-	 * xMark requests as played
+	 * Read requests
+	 * Queue requests
+	 * Decline requests
+	 * Mark requests as played
+	 * 
+	 * System information
+	 * Advanced info
+	 * Archive
+	 * Delete
+	 * RAC
+	 * API config
 	 */
 	public boolean test() {
 		try {
@@ -326,6 +333,58 @@ public class MRSInterface {
 		catch(Exception e) {
 			return 404;
 		}
+	}
+	
+	public HashMap<String,String> getSystemVersion() throws OneJobException {
+		HashMap<String,String> out = new HashMap<>();
+		out.put("major","0");
+		out.put("minor","0");
+		out.put("revision","0");
+		out.put("identifier","SHOJ");
+		out.put("release","System had ONE JOB!");
+		out.put("beta","no");
+		ArrayList<String> output = new ArrayList<>();
+		try {
+			String pdata = "key=" + config.get("Key");
+			byte[] data = pdata.getBytes(StandardCharsets.UTF_8);
+			URL uo = new URL(config.get("URL") + "/api/autover.php");
+	        HttpURLConnection conn = (HttpURLConnection)uo.openConnection();
+	        conn.setRequestMethod("POST");
+	        conn.setDoOutput(true);
+	        conn.setUseCaches(false);
+	        conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+	        conn.setRequestProperty("charset","utf-8");
+	        conn.setRequestProperty("Content-Length",Integer.toString(data.length));
+	        DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
+	        dos.write(data);
+	        dos.flush();
+	        dos.close();
+
+	        if(conn.getResponseCode() != 200) {
+	        	throw new OneJobException(String.valueOf(conn.getResponseCode()));
+	        }
+	        
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                output.add(line);
+            }
+            br.close();
+            
+            for(String x : output) {
+            	if(x.length() > 0 && x.indexOf("=") >= 0) {
+	            	String[] y = x.split("=");
+	            	out.put(y[0],y[1]);
+            	}
+            }
+            return out;
+        }
+        catch(Exception e) {
+            //Some error occurred, bail out
+            throw new OneJobException(e.getMessage());
+        }
 	}
 
 	private String cleanOutput(String out) {

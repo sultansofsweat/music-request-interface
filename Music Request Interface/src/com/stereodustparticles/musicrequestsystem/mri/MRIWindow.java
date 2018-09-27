@@ -2,6 +2,7 @@ package com.stereodustparticles.musicrequestsystem.mri;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import java.util.HashMap;
 //import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -261,7 +262,39 @@ public class MRIWindow extends JFrame {
 		JMenuItem mntmVersionInfo = new JMenuItem("Version info");
 		mntmVersionInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(contentPane,"This feature is not yet available in the MRI.","Not implemented",JOptionPane.WARNING_MESSAGE);
+				//JOptionPane.showMessageDialog(contentPane,"This feature is not yet available in the MRI.","Not implemented",JOptionPane.WARNING_MESSAGE);
+				try {
+					HashMap<String,String> ver = mrs.getSystemVersion();
+					String verinfo = "Version " + ver.get("major") + "." + ver.get("minor") + ver.get("identifier") + ", revision " + ver.get("revision") + "\n";
+					if(ver.get("beta").indexOf("yes") >= 0) {
+						verinfo += "This is a pre-release version of the MRS.\n";
+					}
+					verinfo += "Released " + ver.get("release");
+					JOptionPane.showMessageDialog(contentPane,verinfo,"MRS Version Information",JOptionPane.INFORMATION_MESSAGE);
+				}
+				catch(OneJobException ex) {
+					switch(ex.getMessage()) {
+					case "500":
+						JOptionPane.showMessageDialog(contentPane,"The MRS encountered an error getting the necessary information.\nMicrowave the MRS server and try again.","System had ONE JOB!",JOptionPane.ERROR_MESSAGE);
+						break;
+						
+					case "410":
+						JOptionPane.showMessageDialog(contentPane,"You seem to have had only ONE JOB and didn't enable the API on your MRS.","API disabled",JOptionPane.INFORMATION_MESSAGE);
+						break;
+						
+					case "404":
+						JOptionPane.showMessageDialog(contentPane,"Either the MRS you are connected to does not support this operation, or it has been disabled by the administrator.","Disabled or non-existant API call",JOptionPane.INFORMATION_MESSAGE);
+						break;
+						
+					case "403":
+						JOptionPane.showMessageDialog(contentPane,"Your API key is invalid. Check your settings and try again.","Access Denied",JOptionPane.ERROR_MESSAGE);
+						break;
+						
+					default:
+						JOptionPane.showMessageDialog(contentPane,"Some kind of unknown error occurred. Slap the MRS and API with a GPX clock radio.\n\nError code: " + ex.getMessage(),"System had ONE JOB!",JOptionPane.ERROR_MESSAGE);
+						break;
+					}
+				}
 			}
 		});
 		mnMrs.add(mntmVersionInfo);
