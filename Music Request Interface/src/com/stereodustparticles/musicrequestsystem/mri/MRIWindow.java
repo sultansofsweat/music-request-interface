@@ -263,6 +263,7 @@ public class MRIWindow extends JFrame {
 		mntmVersionInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					System.out.println("bluh");
 					HashMap<String,String> ver = mrs.getSystemVersion();
 					String verinfo = "Version " + ver.get("major") + "." + ver.get("minor") + ver.get("identifier") + ", revision " + ver.get("revision") + "\n";
 					if(ver.get("beta").indexOf("yes") >= 0) {
