@@ -72,7 +72,7 @@ public class MRIWindow extends JFrame {
 	private JTextArea req3;
 	private JTextArea req4;
 	private int refreshtime;
-	private static final String[] version = {"1.0","ALPHA","6","2018092701"};
+	private static final String[] version = {"1.0","ALPHA","6","2019020803"};
 
 	/**
 	 * Launch the application.
@@ -512,7 +512,7 @@ public class MRIWindow extends JFrame {
 		mntmAboutMri.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Icon icon = new ImageIcon(MRIWindow.class.getResource("/com/stereodustparticles/musicrequestsystem/mri/icon.png"));
-				JOptionPane.showMessageDialog(contentPane,"Music Request Interface\nInterface software for use with the Music Request System\n\nVersion: " + version[0] + " " + version[1] + ", release " + version[2] + "\nBuild identifier " + version[3] + "\n\nCopyright 2018 Brad Hunter/CarnelProd666. All rights reserved.\nDuplication prohibited except with written permission.","All your request are belong to us",JOptionPane.QUESTION_MESSAGE,icon);
+				JOptionPane.showMessageDialog(contentPane,"Music Request Interface\nInterface software for use with the Music Request System\n\nVersion: " + version[0] + " " + version[1] + ", release " + version[2] + "\nBuild identifier " + version[3] + "\n\nCopyright 2018-2019 Brad Hunter/CarnelProd666. All rights reserved.\nDuplication prohibited except with written permission.","All your request are belong to us",JOptionPane.QUESTION_MESSAGE,icon);
 			}
 		});
 		mnAbout.add(mntmAboutMri);
