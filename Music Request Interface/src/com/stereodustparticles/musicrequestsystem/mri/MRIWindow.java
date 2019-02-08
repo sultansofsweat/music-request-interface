@@ -262,7 +262,6 @@ public class MRIWindow extends JFrame {
 		JMenuItem mntmVersionInfo = new JMenuItem("Version info");
 		mntmVersionInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//JOptionPane.showMessageDialog(contentPane,"This feature is not yet available in the MRI.","Not implemented",JOptionPane.WARNING_MESSAGE);
 				try {
 					HashMap<String,String> ver = mrs.getSystemVersion();
 					String verinfo = "Version " + ver.get("major") + "." + ver.get("minor") + ver.get("identifier") + ", revision " + ver.get("revision") + "\n";
