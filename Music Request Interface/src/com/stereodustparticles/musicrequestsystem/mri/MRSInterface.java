@@ -229,7 +229,6 @@ public class MRSInterface {
 			String[] r3 = t.split("&");
 			try {
 				if(Integer.valueOf(r3[0]) > 0) {
-					System.out.println(Arrays.toString(r3) + "\n");
 					String[] r2 = new String[8];
 					r2[0]="";
 					r2[1]="";

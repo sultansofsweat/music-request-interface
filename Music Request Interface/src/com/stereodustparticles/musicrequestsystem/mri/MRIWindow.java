@@ -142,7 +142,7 @@ public class MRIWindow extends JFrame {
 		}
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 550);
+		setBounds(100, 100, 450, 738);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -527,7 +527,7 @@ public class MRIWindow extends JFrame {
 		req1.setLineWrap(true);
 		req1.setEditable(false);
 		req1.setText("The Testers-This is a test requst, requested by TEST REQUESTER");
-		req1.setBounds(10, 14, 414, 45);
+		req1.setBounds(10, 14, 414, 90);
 		req1.setVisible(false);
 		contentPane.add(req1);
 		
@@ -543,12 +543,12 @@ public class MRIWindow extends JFrame {
 				}
 			}
 		});
-		info1.setBounds(20, 67, 89, 23);
+		info1.setBounds(20, 116, 89, 23);
 		info1.setEnabled(false);
 		contentPane.add(info1);
 		
 		queue1 = new JButton("Queue");
-		queue1.setBounds(119, 67, 89, 23);
+		queue1.setBounds(119, 116, 89, 23);
 		queue1.setEnabled(false);
 		queue1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -575,7 +575,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(queue1);
 		
 		decline1 = new JButton("Decline");
-		decline1.setBounds(218, 67, 89, 23);
+		decline1.setBounds(218, 116, 89, 23);
 		decline1.setEnabled(false);
 		decline1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -605,7 +605,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(decline1);
 		
 		played1 = new JButton("Played");
-		played1.setBounds(317, 67, 89, 23);
+		played1.setBounds(317, 116, 89, 23);
 		played1.setEnabled(false);
 		played1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -634,7 +634,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(played1);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(10, 101, 414, 2);
+		separator.setBounds(10, 151, 414, 2);
 		contentPane.add(separator);
 		
 		req2 = new JTextArea();
@@ -643,11 +643,11 @@ public class MRIWindow extends JFrame {
 		req2.setEditable(false);
 		req2.setVisible(false);
 		req2.setText("The Testers-This is a test request, requested by TEST REQUESTER");
-		req2.setBounds(10, 114, 414, 45);
+		req2.setBounds(10, 165, 414, 90);
 		contentPane.add(req2);
 		
 		info2 = new JButton("View info");
-		info2.setBounds(20, 170, 89, 23);
+		info2.setBounds(20, 267, 89, 23);
 		info2.setEnabled(false);
 		info2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -663,7 +663,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(info2);
 		
 		queue2 = new JButton("Queue");
-		queue2.setBounds(119, 170, 89, 23);
+		queue2.setBounds(119, 267, 89, 23);
 		queue2.setEnabled(false);
 		queue2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -690,7 +690,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(queue2);
 		
 		decline2 = new JButton("Decline");
-		decline2.setBounds(218, 170, 89, 23);
+		decline2.setBounds(218, 267, 89, 23);
 		decline2.setEnabled(false);
 		decline2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -720,7 +720,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(decline2);
 		
 		played2 = new JButton("Played");
-		played2.setBounds(317, 170, 89, 23);
+		played2.setBounds(317, 267, 89, 23);
 		played2.setEnabled(false);
 		played2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -749,12 +749,12 @@ public class MRIWindow extends JFrame {
 		contentPane.add(played2);
 		
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(10, 204, 414, 2);
+		separator_1.setBounds(10, 302, 414, 2);
 		contentPane.add(separator_1);
 		
 		req3 = new JTextArea();
 		req3.setText("The Testers-This is a test requst, requested by TEST REQUESTER");
-		req3.setBounds(10, 217, 414, 45);
+		req3.setBounds(10, 316, 414, 90);
 		req3.setWrapStyleWord(true);
 		req3.setLineWrap(true);
 		req3.setEditable(false);
@@ -762,7 +762,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(req3);
 		
 		info3 = new JButton("View info");
-		info3.setBounds(20, 273, 89, 23);
+		info3.setBounds(20, 418, 89, 23);
 		info3.setEnabled(false);
 		info3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -778,7 +778,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(info3);
 		
 		queue3 = new JButton("Queue");
-		queue3.setBounds(119, 273, 89, 23);
+		queue3.setBounds(119, 418, 89, 23);
 		queue3.setEnabled(false);
 		queue3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -805,7 +805,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(queue3);
 		
 		decline3 = new JButton("Decline");
-		decline3.setBounds(218, 273, 89, 23);
+		decline3.setBounds(218, 418, 89, 23);
 		decline3.setEnabled(false);
 		decline3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -835,7 +835,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(decline3);
 		
 		played3 = new JButton("Played");
-		played3.setBounds(317, 273, 89, 23);
+		played3.setBounds(317, 418, 89, 23);
 		played3.setEnabled(false);
 		played3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -865,7 +865,7 @@ public class MRIWindow extends JFrame {
 		
 		req4 = new JTextArea();
 		req4.setText("The Testers-This is a test requst, requested by TEST REQUESTER");
-		req4.setBounds(10, 320, 414, 45);
+		req4.setBounds(10, 463, 414, 90);
 		req4.setWrapStyleWord(true);
 		req4.setLineWrap(true);
 		req4.setEditable(false);
@@ -873,7 +873,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(req4);
 		
 		info4 = new JButton("View info");
-		info4.setBounds(20, 376, 89, 23);
+		info4.setBounds(26, 565, 89, 23);
 		info4.setEnabled(false);
 		info4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -889,7 +889,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(info4);
 		
 		queue4 = new JButton("Queue");
-		queue4.setBounds(119, 376, 89, 23);
+		queue4.setBounds(125, 565, 89, 23);
 		queue4.setEnabled(false);
 		queue4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -916,7 +916,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(queue4);
 		
 		decline4 = new JButton("Decline");
-		decline4.setBounds(218, 376, 89, 23);
+		decline4.setBounds(224, 565, 89, 23);
 		decline4.setEnabled(false);
 		decline4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -946,7 +946,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(decline4);
 		
 		played4 = new JButton("Played");
-		played4.setBounds(317, 376, 89, 23);
+		played4.setBounds(317, 565, 89, 23);
 		played4.setEnabled(false);
 		played4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -975,33 +975,33 @@ public class MRIWindow extends JFrame {
 		contentPane.add(played4);
 		
 		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(10, 410, 414, 2);
+		separator_2.setBounds(10, 600, 414, 2);
 		contentPane.add(separator_2);
 		
 		JSeparator separator_3 = new JSeparator();
-		separator_3.setBounds(10, 307, 414, 2);
+		separator_3.setBounds(10, 449, 414, 2);
 		contentPane.add(separator_3);
 		
 		JLabel lblAdditionalRequests = new JLabel("Additional requests:");
 		lblAdditionalRequests.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblAdditionalRequests.setBounds(10, 423, 128, 14);
+		lblAdditionalRequests.setBounds(10, 614, 128, 14);
 		contentPane.add(lblAdditionalRequests);
 		
 		additional = new JLabel("9999999999");
-		additional.setBounds(148, 423, 80, 14);
+		additional.setBounds(148, 614, 80, 14);
 		contentPane.add(additional);
 		
 		JLabel lblTimeToNext = new JLabel("Time to next refresh:");
 		lblTimeToNext.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTimeToNext.setBounds(223, 423, 128, 14);
+		lblTimeToNext.setBounds(223, 614, 128, 14);
 		contentPane.add(lblTimeToNext);
 		
 		time = new JLabel("99");
-		time.setBounds(361, 423, 24, 14);
+		time.setBounds(361, 614, 24, 14);
 		contentPane.add(time);
 		
 		refresh = new JButton("Refresh now");
-		refresh.setBounds(10, 457, 118, 23);
+		refresh.setBounds(10, 648, 118, 23);
 		refresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				getRequests();
@@ -1011,7 +1011,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(refresh);
 		
 		control = new JButton("Stop/start timer");
-		control.setBounds(138, 457, 128, 23);
+		control.setBounds(138, 648, 128, 23);
 		control.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(stopped == true) {
@@ -1025,7 +1025,7 @@ public class MRIWindow extends JFrame {
 		contentPane.add(control);
 		
 		system = new JButton("Open/close system");
-		system.setBounds(276, 457, 148, 23);
+		system.setBounds(276, 648, 148, 23);
 		system.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
