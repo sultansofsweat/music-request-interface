@@ -72,7 +72,7 @@ public class MRIWindow extends JFrame {
 	private JTextArea req3;
 	private JTextArea req4;
 	private int refreshtime;
-	private static final String[] version = {"1.0","ALPHA","6","2019020803"};
+	private static final String[] version = {"1.0","ALPHA","6","201904132"};
 
 	/**
 	 * Launch the application.
