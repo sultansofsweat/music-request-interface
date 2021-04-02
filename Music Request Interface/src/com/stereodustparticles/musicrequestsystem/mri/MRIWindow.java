@@ -138,7 +138,7 @@ public class MRIWindow extends JFrame {
 			mrs = new MRSInterface();
 		} catch (OneJobException e) {
 			JOptionPane.showMessageDialog(contentPane,"Failed to initialize MRS link information.\nThrow a GPX clock radio at your MRS and try again.\n\nError: " + e.getMessage(),"One Job Encountered!",JOptionPane.ERROR_MESSAGE);
-			mrs = new MRSInterface("","");
+			mrs = new MRSInterface("","","");
 		}
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -162,7 +162,7 @@ public class MRIWindow extends JFrame {
 		JMenuItem mntmTestConfiguration = new JMenuItem("Test configuration");
 		mntmTestConfiguration.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(mrs.getConfig(true) == "" || mrs.getConfig(false) == "") {
+				if(mrs.getConfig("URL") == "" || mrs.getConfig("Key") == "" || mrs.getConfig("Version") == "") {
 					JOptionPane.showMessageDialog(contentPane,"The MRI is unconfigured. Please configure it first.","Configure me!",JOptionPane.WARNING_MESSAGE);
 				}
 				else {
@@ -186,6 +186,7 @@ public class MRIWindow extends JFrame {
 				jfc.setFileFilter(f);
 				String url = "";
 				String key = "";
+				String ver = "";
 				String line;
 				jfc.showOpenDialog(contentPane);
 				if(jfc.getSelectedFile() != null) {
@@ -203,6 +204,9 @@ public class MRIWindow extends JFrame {
 			                	case "key":
 			                		key = entry[1];
 			                		break;
+			                	case "ver":
+			                		ver = entry[1];
+			                		break;
 			                	case "reftime":
 			                		refreshtime = Integer.valueOf(entry[1]);
 			                	}
@@ -210,7 +214,7 @@ public class MRIWindow extends JFrame {
 			            }   
 
 			            bufferedReader.close();
-			            mrs.changeConfig(url,key);
+			            mrs.changeConfig(url,key,ver);
 			            JOptionPane.showMessageDialog(contentPane,"The configuration in file:\n" + jfc.getSelectedFile().getPath() + "\nwas loaded. Please make sure to test it!","Configuration loaded",JOptionPane.WARNING_MESSAGE);
 					}
 					catch (ArrayIndexOutOfBoundsException e1) {
@@ -264,11 +268,22 @@ public class MRIWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					HashMap<String,String> ver = mrs.getSystemVersion();
-					String verinfo = "Version " + ver.get("major") + "." + ver.get("minor") + ver.get("identifier") + ", revision " + ver.get("revision") + "\n";
-					if(ver.get("beta").indexOf("yes") >= 0) {
-						verinfo += "This is a pre-release version of the MRS.\n";
+					String verinfo = "";
+					if(mrs.getConfig("Version") == "2.3") {
+						verinfo = "Version " + ver.get("major") + "." + ver.get("minor") + ver.get("identifier") + ", revision " + ver.get("revision") + "\n";
+						if(ver.get("beta").indexOf("yes") >= 0) {
+							verinfo += "This is a pre-release version of the MRS.\n";
+						}
+						verinfo += "Released " + ver.get("release");
 					}
-					verinfo += "Released " + ver.get("release");
+					else if(mrs.getConfig("Version") == "2.4") {
+						verinfo = "Version " + ver.get("major") + "." + ver.get("minor") + ", revision " + ver.get("revision") + "\n";
+						verinfo += "Build code " + ver.get("buildcode") + "\n";
+						verinfo += "Released " + ver.get("release");
+						if(Integer.parseInt(ver.get("updates")) > 0) {
+							verinfo += "\nThere are " + ver.get("updates") + " updates available.";
+						}
+					}
 					JOptionPane.showMessageDialog(contentPane,verinfo,"MRS Version Information",JOptionPane.INFORMATION_MESSAGE);
 				}
 				catch(OneJobException ex) {

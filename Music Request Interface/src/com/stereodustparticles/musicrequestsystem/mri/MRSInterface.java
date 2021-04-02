@@ -15,14 +15,16 @@ import java.util.HashMap;
 public class MRSInterface {
 	private HashMap<String,String> config;
 	
-	public MRSInterface(String url, String key) {
+	public MRSInterface(String url, String key, String ver) {
 		config = new HashMap<>();
 		config.put("URL",url);
 		config.put("Key",key);
+		config.put("Version",ver);
 	}
 	public MRSInterface() throws OneJobException {
 		String url = "";
 		String key = "";
+		String version = "";
 		String line;
 		try {
 			FileReader fileReader = new FileReader("config.mri");
@@ -37,6 +39,9 @@ public class MRSInterface {
                 		break;
                 	case "key":
                 		key = entry[1];
+                		break;
+                	case "version":
+                		version = entry[1];
                 		break;
                 	}
                 }
@@ -54,10 +59,11 @@ public class MRSInterface {
 		config = new HashMap<>();
 		config.put("URL",url);
 		config.put("Key",key);
+		config.put("Version",version);
 	}
 	
 	public void saveConfig() throws OneJobException {
-		String serialized = "url," + config.get("URL") + "\nkey," + config.get("Key");
+		String serialized = "url," + config.get("URL") + "\nkey," + config.get("Key") + "\nver," + config.get("Version");
 		try {
 			FileWriter fileWriter = new FileWriter("config.mri");
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -71,16 +77,21 @@ public class MRSInterface {
 		}
 	}
 	
-	public void changeConfig(String u, String k) {
+	public void changeConfig(String u, String k, String v) {
 		config.put("URL",u);
 		config.put("Key",k);
+		config.put("Version",v);
 	}
 	
-	public String getConfig(boolean which) {
-		if(which == true) {
+	public String getConfig(String which) {
+		if(config.containsKey(which)) {
+			return config.get(which);
+		}
+		return "";
+		/*if(which == true) {
 			return config.get("URL");
 		}
-		return config.get("Key");
+		return config.get("Key");*/
 	}
 	
 	/* MRS INTERFACE:
@@ -334,13 +345,29 @@ public class MRSInterface {
 	}
 	
 	public HashMap<String,String> getSystemVersion() throws OneJobException {
+		String whichVersion = "";
+		try {
+			whichVersion = config.get("Version");
+			if(whichVersion == null) {
+				throw new OneJobException("Exit as version not set");
+			}
+		}
+		catch (OneJobException e) {
+			throw new OneJobException("MRS version indeterminate");
+		}
 		HashMap<String,String> out = new HashMap<>();
 		out.put("major","0");
 		out.put("minor","0");
 		out.put("revision","0");
-		out.put("identifier","SHOJ");
 		out.put("release","System had ONE JOB!");
-		out.put("beta","no");
+		if(whichVersion == "2.3") {
+			out.put("identifier","SHOJ");
+			out.put("beta","no");
+		}
+		else {
+			out.put("buildcode","1970010100001");
+			out.put("updates","0");
+		}
 		ArrayList<String> output = new ArrayList<>();
 		try {
 			String pdata = "key=" + config.get("Key");
